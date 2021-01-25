@@ -1,3 +1,5 @@
+require('./config/config');
+
 const express = require('express');
 const app = express();
 
@@ -16,6 +18,13 @@ app.get('/usuario', function(req, res) {
 app.post('/usuario', function(req, res) {
 
     let body = req.body;
+
+    if (body.nombre === undefined) {
+        res.status(400).json({
+            ok: false,
+            mensaje: 'El nombre es necesario'
+        });
+    }
     res.json(body);
 });
 
@@ -32,6 +41,6 @@ app.delete('/usuario', function(req, res) {
 });
 
 
-app.listen(3000, () => {
-    console.log('Escuchando el puerto: ', 3000);
+app.listen(process.env.port, () => {
+    console.log('Escuchando el puerto: ', process.env.port);
 });
