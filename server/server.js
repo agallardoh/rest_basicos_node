@@ -13,40 +13,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-app.get('/usuario', function(req, res) {
-    res.json('get usuario');
-});
+app.use(require('./routes/usuario'));
 
-app.post('/usuario', function(req, res) {
+mongoose.connect('mongodb://localhost:27017/cafe', {
 
-    let body = req.body;
-
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre es necesario'
-        });
-    }
-    res.json(body);
-});
-
-app.put('/usuario/:id', function(req, res) {
-
-    let id = req.params.id;
-    res.json({
-        id
-    });
-});
-
-app.delete('/usuario', function(req, res) {
-    res.json('delete usuario');
-});
-
-mongoose.connect('mongodb://127.0.0.1:27017/cafe', {
         useNewUrlParser: true,
         useUnifiedTopology: true
-    }).then((resp) => { console.log('Connected to Mongo!!'); })
-    .catch((error) => { console.log('Error connecting to Mongo', error); });
+
+    })
+    .then(() => console.log('base de datos ONLINE'))
+    .catch(err => console.log('No se pudo conectar', err));
 
 app.listen(process.env.port, () => {
     console.log('Escuchando el puerto: ', process.env.port);
