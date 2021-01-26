@@ -1,6 +1,8 @@
 require('./config/config');
 
 const express = require('express');
+const mongoose = require('mongoose');
+
 const app = express();
 
 const bodyParser = require('body-parser');
@@ -40,6 +42,11 @@ app.delete('/usuario', function(req, res) {
     res.json('delete usuario');
 });
 
+mongoose.connect('mongodb://127.0.0.1:27017/cafe', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }).then((resp) => { console.log('Connected to Mongo!!'); })
+    .catch((error) => { console.log('Error connecting to Mongo', error); });
 
 app.listen(process.env.port, () => {
     console.log('Escuchando el puerto: ', process.env.port);
