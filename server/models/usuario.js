@@ -21,6 +21,7 @@ let usuarioSchema = new Schema({
         required: false
     },
     role: {
+        type: String,
         default: 'USER_ROLE'
     },
     estado: {
@@ -33,4 +34,4 @@ let usuarioSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Usuario', usuarioSchema)
+module.exports = mongoose.model('Usuario', usuarioSchema);
