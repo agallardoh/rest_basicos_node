@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 
 let Schema = mongoose.Schema;
@@ -10,6 +11,7 @@ let usuarioSchema = new Schema({
     },
     email: {
         type: String,
+        unique: true,
         required: [true, 'El correo es necesario']
     },
     password: {
@@ -32,6 +34,10 @@ let usuarioSchema = new Schema({
         type: Boolean,
         default: false
     }
+});
+
+usuarioSchema.plugin(uniqueValidator, {
+    message: '{PATH} debe ser unico'
 });
 
 module.exports = mongoose.model('Usuario', usuarioSchema);
