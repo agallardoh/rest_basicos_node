@@ -4,6 +4,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 
 mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
 
 let rolesValidos = {
     values: ['ADMIN_ROLE', 'USER_ROLE'],
