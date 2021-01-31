@@ -10,6 +10,15 @@ const app = express();
 app.get('/usuario', function(req, res) {
     //res.json('get usuario');
 
+    Usuario.find({})
+        .exec((err, usuarios) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+        });
 
 });
 
