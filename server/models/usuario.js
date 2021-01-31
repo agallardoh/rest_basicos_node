@@ -1,6 +1,16 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
+const uniqueValidator = require('mongoose-unique-validator');
+
+
+mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
+
+let rolesValidos = {
+    values: ['ADMIN_ROLE', 'USER_ROLE'],
+    message: '{VALUE} no es un rol valido'
+};
 
 let Schema = mongoose.Schema;
 
@@ -24,7 +34,8 @@ let usuarioSchema = new Schema({
     },
     role: {
         type: String,
-        default: 'USER_ROLE'
+        default: 'USER_ROLE',
+        enum: rolesValidos
     },
     estado: {
         type: Boolean,
@@ -35,6 +46,15 @@ let usuarioSchema = new Schema({
         default: false
     }
 });
+
+usuarioSchema.methods.toJSON = function() {
+
+    let user = this;
+    let userObject = user.toObject();
+    delete userObject.password;
+
+    return userObject;
+};
 
 usuarioSchema.plugin(uniqueValidator, {
     message: '{PATH} debe ser unico'
