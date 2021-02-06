@@ -4,11 +4,12 @@ const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
 const Usuario = require('../models/usuario');
+const { verificaToken } = require('../middlewares/autenticacion');
 
 
 const app = express();
 
-app.get('/usuario', function(req, res) {
+app.get('/usuario', verificaToken, (req, res) => {
     //res.json('get usuario');
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -18,7 +19,7 @@ app.get('/usuario', function(req, res) {
 
     let filtros = {
         estado: true
-    }
+    };
 
     Usuario.find(filtros, 'nombre email role estado google img')
         .skip(desde)
@@ -105,7 +106,7 @@ app.delete('/usuario/:id', function(req, res) {
 
     let cambiaEstado = {
         estado: false
-    }
+    };
     Usuario.findByIdAndUpdate(id, cambiaEstado, { new: true, context: 'query' }, (err, usuarioBorrado) => {
 
         if (err) {
