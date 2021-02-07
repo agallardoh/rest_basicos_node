@@ -10,7 +10,13 @@ const { verificaToken } = require('../middlewares/autenticacion');
 const app = express();
 
 app.get('/usuario', verificaToken, (req, res) => {
-    //res.json('get usuario');
+
+    return res.json({
+        usuario: req.usuario,
+        nombre: req.usuario.nombre,
+        email: req.usuario.email
+    });
+
     let desde = req.query.desde || 0;
     desde = Number(desde);
 
@@ -45,7 +51,7 @@ app.get('/usuario', verificaToken, (req, res) => {
 
 });
 
-app.post('/usuario', function(req, res) {
+app.post('/usuario', verificaToken, function(req, res) {
 
     let body = req.body;
 
@@ -70,7 +76,7 @@ app.post('/usuario', function(req, res) {
     });
 });
 
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', verificaToken, function(req, res) {
 
     let id = req.params.id;
     //let body = req.body;
@@ -78,12 +84,6 @@ app.put('/usuario/:id', function(req, res) {
 
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true, context: 'query' }, (err, usuarioDB) => {
 
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            });
-        }
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -99,7 +99,7 @@ app.put('/usuario/:id', function(req, res) {
 
 });
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', verificaToken, function(req, res) {
 
     let id = req.params.id;
     //Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
