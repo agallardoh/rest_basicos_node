@@ -5,17 +5,18 @@ const _ = require('underscore');
 
 const Usuario = require('../models/usuario');
 const { verificaToken } = require('../middlewares/autenticacion');
+const { esAdminRole } = require('../middlewares/validar-roles');
 
 
 const app = express();
 
 app.get('/usuario', verificaToken, (req, res) => {
 
-    return res.json({
-        usuario: req.usuario,
-        nombre: req.usuario.nombre,
-        email: req.usuario.email
-    });
+    // return res.json({
+    //     usuario: req.usuario,
+    //     nombre: req.usuario.nombre,
+    //     email: req.usuario.email
+    // });
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -26,6 +27,8 @@ app.get('/usuario', verificaToken, (req, res) => {
     let filtros = {
         estado: true
     };
+
+    //console.log(desde, limite, filtros);
 
     Usuario.find(filtros, 'nombre email role estado google img')
         .skip(desde)
@@ -99,7 +102,7 @@ app.put('/usuario/:id', verificaToken, function(req, res) {
 
 });
 
-app.delete('/usuario/:id', verificaToken, function(req, res) {
+app.delete('/usuario/:id', [verificaToken, esAdminRole], function(req, res) {
 
     let id = req.params.id;
     //Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
