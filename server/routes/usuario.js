@@ -4,9 +4,10 @@ const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
 const Usuario = require('../models/usuario');
-const { verificaToken } = require('../middlewares/autenticacion');
-const { esAdminRole, tieneRole } = require('../middlewares/validar-roles');
+// const { verificaToken } = require('../middlewares/autenticacion');
+// const { esAdminRole, tieneRole } = require('../middlewares/validar-roles');
 
+const { verificaToken, esAdminRole, tieneRole } = require('../middlewares');
 
 const app = express();
 
