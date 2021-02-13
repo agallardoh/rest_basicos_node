@@ -5,7 +5,7 @@ const _ = require('underscore');
 
 const Usuario = require('../models/usuario');
 const { verificaToken } = require('../middlewares/autenticacion');
-const { esAdminRole } = require('../middlewares/validar-roles');
+const { esAdminRole, tieneRole } = require('../middlewares/validar-roles');
 
 
 const app = express();
@@ -102,7 +102,7 @@ app.put('/usuario/:id', verificaToken, function(req, res) {
 
 });
 
-app.delete('/usuario/:id', [verificaToken, esAdminRole], function(req, res) {
+app.delete('/usuario/:id', [verificaToken, tieneRole('ADMIN_ROLE', 'VENTAS_ROLE', 'NOSE_ROLE')], function(req, res) {
 
     let id = req.params.id;
     //Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {
